@@ -5,20 +5,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.util.List;
+
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String code;
-    private String Name;
-    private Double price;
-    private Date creationDate;
-    @ManyToOne
-    @JoinColumn(name = "id_category")
-    private Category category;
+    private String name;
+    private String description;
+    @OneToMany(mappedBy = "category")
+    private List<Product> productList;
+
 }
