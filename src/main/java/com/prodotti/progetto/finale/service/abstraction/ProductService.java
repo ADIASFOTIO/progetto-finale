@@ -13,11 +13,13 @@ public interface ProductService {
     void deleteProductById(Long id);
     Optional<Product> getProductById(Long id);
     List<Product> getAllProduct();
-    Iterable<Product> findWithNameAndPrice(String name, Double price);
+    Optional<List<Product>> findProductByCategoryId(Long id);
     Optional<List<Product>> findProductByCode(String code);
     Optional<List<Product>> findProductByName(String name);
-    Iterable<Product> findProductByNameContainingAndIsAvailableTrue(String part);
-    Iterable<Product> findProductByCategoryAndIsAvailableTrue(Category category);
+    Iterable<Product> findProductByNameContaining(String part);
+    Iterable<Product> findProductByCategory(Category category);
+    List<Product> trillProductByNameAndPrice();
+    List<Product> findProductByNamePrice(String name, Double price);
 
 
 

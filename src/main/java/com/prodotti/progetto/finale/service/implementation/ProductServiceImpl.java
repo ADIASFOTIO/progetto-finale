@@ -9,12 +9,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
 @Service
-public class ProductServiceImp implements ProductService {
-    ProductRepository productRepository;
+public class ProductServiceImpl implements ProductService {
+    private ProductRepository productRepository;
     @Autowired
-    public ProductServiceImp(ProductRepository productRepository) {
+    public ProductServiceImpl(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
     @Override
@@ -42,8 +41,8 @@ public class ProductServiceImp implements ProductService {
         return productRepository.findAll();
     }
     @Override
-    public List<Product> findWithNameAndPrice(String name, Double price) {
-        return productRepository.findByNamePrice(name, price);
+    public Optional<List<Product>> findProductByCategoryId(Long id) {
+        return productRepository.findByCategoryId(id);
     }
     @Override
     public Optional<List<Product>> findProductByCode(String code) {
@@ -53,14 +52,20 @@ public class ProductServiceImp implements ProductService {
     public Optional<List<Product>> findProductByName(String name) {
         return productRepository.findByName(name);
     }
-
     @Override
-    public Iterable<Product> findProductByNameContainingAndIsAvailableTrue(String part) {
-        return productRepository.findByNameContainingAndIsAvailableTrue(part);
+    public Iterable<Product> findProductByNameContaining(String part) {
+        return productRepository.findByNameContaining(part);
     }
     @Override
-    public Iterable<Product> findProductByCategoryAndIsAvailableTrue(Category category) {
-        return productRepository.findByCategoryAndIsAvailableTrue(category);
+    public Iterable<Product> findProductByCategory(Category category) {
+        return productRepository.findByCategory(category);
     }
-
+    @Override
+    public List<Product> trillProductByNameAndPrice() {
+        return productRepository.trillByNameAndPrice();
+    }
+    @Override
+    public List<Product> findProductByNamePrice(String name, Double price) {
+        return productRepository.findByNamePrice(name, price);
+    }
 }
