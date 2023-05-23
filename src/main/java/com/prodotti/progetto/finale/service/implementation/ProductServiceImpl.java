@@ -1,5 +1,6 @@
 package com.prodotti.progetto.finale.service.implementation;
 
+import com.prodotti.progetto.finale.dto.ProductDto;
 import com.prodotti.progetto.finale.entities.Category;
 import com.prodotti.progetto.finale.entities.Product;
 import com.prodotti.progetto.finale.repository.ProductRepository;
@@ -9,20 +10,32 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
 public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
     @Autowired
     public ProductServiceImpl(ProductRepository productRepository) {
+
         this.productRepository = productRepository;
     }
     @Override
-    public Product saveProduct(Product product) {
-        return productRepository.save(product);
+    public ProductDto saveProduct(ProductDto dto) {
+        return ProductDto.convertEntityToDto(
+                productRepository.save(
+                        ProductDto.convertDtoToEntity(dto)
+                )
+        );
     }
     @Override
-    public Product updateProduct(Product product) {
-        return productRepository.save(product);
+    public ProductDto updateProduct(ProductDto productDto) {
+
+        return ProductDto.convertEntityToDto(
+                productRepository.save(
+                        ProductDto.convertDtoToEntity(productDto)
+                )
+        );
     }
     @Override
     public void deleteProduct(Product product) {
@@ -33,12 +46,14 @@ public class ProductServiceImpl implements ProductService {
         productRepository.deleteById(id);
     }
     @Override
-    public Optional<Product> getProductById(Long id) {
-        return productRepository.findById(id);
+    public ProductDto getProductById(Long id) {
+        return ProductDto.convertEntityToDto(productRepository.findById(id).get());
     }
     @Override
-    public List<Product> getAllProduct() {
-        return productRepository.findAll();
+    public List<ProductDto> getAllProduct() {
+        return (productRepository.findAll().stream()
+                .map(ProductDto::convertEntityToDto)
+                .collect(Collectors.toList()));
     }
     @Override
     public Optional<List<Product>> findProductByCategoryId(Long id) {
